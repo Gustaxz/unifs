@@ -42,25 +42,30 @@ type FileContent struct {
 }
 
 type BootSector struct {
-	JumpBoot          [3]byte // Instruction para pular o boot
-	OemName           [8]byte // Nome do sistema operacional que formatou o disco
-	BytesPerSector    [2]byte // Quantidade de bytes por setor
-	SectorsPerCluster [1]byte // Quantidade de setores por cluster
-	ReservedSectors   [2]byte // Quantidade de setores reservados
-	NumberOfFats      [1]byte // Quantidade de tabelas FAT
-	RootEntries       [2]byte // Quantidade de máxima entradas no diretório raiz
-	TotalSectors      [2]byte // Quantidade total de setores (No FAT12 usa-se tamanho de 512 bytes)
-	Media             [1]byte // Tipo de mídia
-	MediaDescriptor   [2]byte // Descritor de mídia (No FAT12 usa-se 0xF8)
-	SectorsPerFat     [2]byte // Quantidade de setores por FAT
-	SectorsPerTrack   [2]byte // Quantidade de setores por trilha
-	NumberOfHeads     [2]byte // Quantidade de cabeças
-	HiddenSectors     [4]byte // Quantidade de setores ocultos
-	LargeTotalSectors [4]byte // Quantidade total de setores (caso TotalSectors seja maior que 65535)
+	JumpBoot          [3]byte  // Instruction para pular o boot
+	OemName           [8]byte  // Nome do sistema operacional que formatou o disco
+	BytesPerSector    [2]byte  // Quantidade de bytes por setor
+	SectorsPerCluster [1]byte  // Quantidade de setores por cluster
+	ReservedSectors   [2]byte  // Quantidade de setores reservados
+	NumberOfFats      [1]byte  // Quantidade de tabelas FAT
+	RootEntries       [2]byte  // Quantidade de máxima entradas no diretório raiz
+	TotalSectors      [2]byte  // Quantidade total de setores (No FAT12 usa-se tamanho de 512 bytes)
+	Media             [1]byte  // Tipo de mídia
+	MediaDescriptor   [2]byte  // Descritor de mídia (No FAT12 usa-se 0xF8)
+	SectorsPerFat     [2]byte  // Quantidade de setores por FAT
+	SectorsPerTrack   [2]byte  // Quantidade de setores por trilha
+	NumberOfHeads     [2]byte  // Quantidade de cabeças
+	HiddenSectors     [4]byte  // Quantidade de setores ocultos
+	LargeTotalSectors [4]byte  // Quantidade total de setores (caso TotalSectors seja maior que 65535)
+	Ignored           [2]byte  // Ignorado
+	BootSignature     [1]byte  // Assinatura do boot
+	VolumeId          [4]byte  // ID do volume
+	VolumeLabel       [11]byte // Rótulo do volume, um nome mesmo
+	FileSystemType    [8]byte  // Tipo do sistema de arquivos
 }
 
 func main() {
-	filePath := "empty_file.dat"
+	filePath := "mydriver"
 
 	os.Remove(filePath)
 
@@ -95,6 +100,11 @@ func main() {
 		NumberOfHeads:     [2]byte{0x00, 0x00},
 		HiddenSectors:     [4]byte{0x00, 0x00, 0x00, 0x00},
 		LargeTotalSectors: [4]byte{0x00, 0x00, 0x00, 0x00},
+		Ignored:           [2]byte{0x00, 0x00},
+		BootSignature:     [1]byte{0x29},
+		VolumeId:          [4]byte{0x00, 0x00, 0x00, 0x00},
+		VolumeLabel:       [11]byte(StringToBytes("UNIFSYS", 11)),
+		FileSystemType:    [8]byte(StringToBytes("FAT12", 8)),
 	}
 
 	err = binary.Write(file, binary.LittleEndian, EncodeToBytes(data))

@@ -1,1 +1,1 @@
-Get-Content -Path ".\empty_file.dat" -Encoding Byte -TotalCount 128 | Format-Hex
+Get-Content -Path ".\mydriver" -Encoding Byte -TotalCount 128 | Format-Hex
