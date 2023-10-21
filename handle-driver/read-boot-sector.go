@@ -40,7 +40,7 @@ func ReadBootSector(f *os.File) BootSectorMainInfos {
 	bytesPerSector := binary.BigEndian.Uint16(buf[0x0B:0x0D])
 	rootEntries := binary.BigEndian.Uint16(buf[0x11:0x13])
 	totalSectors := binary.BigEndian.Uint16(buf[0x13:0x15])
-	sectorsPerFat := binary.BigEndian.Uint16(buf[0x16:0x18])
+	sectorsPerFat := binary.BigEndian.Uint16(buf[0x18:0x1A])
 	volumeLabel := string(buf[0x2B:0x36])
 	fileSystemType := string(buf[0x36:0x3E])
 

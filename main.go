@@ -28,4 +28,5 @@ func main() {
 
 	bootSector := handleDriver.ReadBootSector(f)
 	fmt.Println(bootSector)
+	handleDriver.CreateFileAllocationTable(f, bootSector)
 }
