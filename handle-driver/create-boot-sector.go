@@ -1,45 +1,11 @@
-package read
+package handleDriver
 
 import (
-	"bytes"
 	"encoding/binary"
 	"os"
-	"reflect"
+
+	"github.com/gustaxz/unifs/utils"
 )
-
-func StringToBytes(s string, size int) []byte {
-	var buf bytes.Buffer
-
-	for i := 0; i < size; i++ {
-		if i < len(s) {
-			buf.WriteByte(s[i])
-		} else {
-			buf.WriteByte(0x20)
-		}
-	}
-
-	return buf.Bytes()
-}
-
-func EncodeToBytes(p interface{}) []byte {
-
-	buf := bytes.Buffer{}
-	values := reflect.ValueOf(p)
-	for i := 0; i < values.NumField(); i++ {
-		err := binary.Write(&buf, binary.LittleEndian, values.Field(i).Interface())
-		if err != nil {
-			panic("Error encoding ID:" + err.Error())
-		}
-	}
-
-	return buf.Bytes()
-}
-
-type FileContent struct {
-	Name  [8]byte
-	Age   [2]byte
-	Hobby [8]byte
-}
 
 type BootSector struct {
 	JumpBoot          [3]byte  // Instruction para pular o boot
@@ -64,30 +30,16 @@ type BootSector struct {
 	FileSystemType    [8]byte  // Tipo do sistema de arquivos
 }
 
-func CreateDriver() {
-	filePath := "mydriver"
-
-	os.Remove(filePath)
-
-	file, err := os.Create(filePath)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
-	sizeInBytes := 2 * 1024 * 1024
-	if err := file.Truncate(int64(sizeInBytes)); err != nil {
-		panic(err)
-	}
+func CreateBootSector(file *os.File) error {
 
 	data := BootSector{
 		JumpBoot:          [3]byte{0xEB, 0x3C, 0x90},
-		OemName:           [8]byte(StringToBytes("UNIFS.0", 8)),
-		BytesPerSector:    [2]byte{0x20, 0x00}, // 0x200 em hexadecimal corresponde a 512 bytes em decimal
+		OemName:           [8]byte(utils.StringToBytes("UNIFS.0", 8)),
+		BytesPerSector:    [2]byte{0x02, 0x00}, // 0x200 em hexadecimal corresponde a 512 bytes em decimal
 		SectorsPerCluster: [1]byte{0x01},
 		ReservedSectors:   [2]byte{0x00, 0x00},
 		NumberOfFats:      [1]byte{0x01},
-		RootEntries:       [2]byte{0x14, 0x00}, // 0x14 em hexadecimal corresponde a 20 em decimal
+		RootEntries:       [2]byte{0x00, 0x14}, // 0x14 em hexadecimal corresponde a 20 em decimal
 		TotalSectors:      [2]byte{0x10, 0x00}, // 0x1000 em hexadecimal corresponde a 4096 em decimal. 4096 * 512 = 2.097.152 bytes ou 2MB de espaço total
 		Media:             [1]byte{0xF8},
 		MediaDescriptor:   [2]byte{0x00, 0x00},
@@ -103,14 +55,10 @@ func CreateDriver() {
 		Ignored:           [2]byte{0x00, 0x00},
 		BootSignature:     [1]byte{0x29},
 		VolumeId:          [4]byte{0x00, 0x00, 0x00, 0x00},
-		VolumeLabel:       [11]byte(StringToBytes("UNIFSYS", 11)),
-		FileSystemType:    [8]byte(StringToBytes("FAT12", 8)),
+		VolumeLabel:       [11]byte(utils.StringToBytes("UNIFSYS", 11)),
+		FileSystemType:    [8]byte(utils.StringToBytes("FAT12", 8)),
 	}
 
-	err = binary.Write(file, binary.LittleEndian, EncodeToBytes(data))
-
-	if err != nil {
-		panic(err)
-	}
+	return binary.Write(file, binary.LittleEndian, utils.EncodeToBytes(data))
 
 }

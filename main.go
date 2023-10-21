@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/binary"
 	"fmt"
 	"io"
 	"os"
@@ -11,6 +12,25 @@ func check(e error) {
 	if e != nil {
 		panic(e)
 	}
+}
+
+//	type BootSectorMainInfos struct {
+//		OemName        [8]byte
+//		BytesPerSector [2]byte
+//		RootEntries    [2]byte
+//		TotalSectors   [2]byte
+//		SectorsPerFat  [2]byte
+//		VolumeLabel    [11]byte
+//		FileSystemType [8]byte
+//	}
+type BootSectorMainInfos struct {
+	OemName        string
+	BytesPerSector uint16
+	RootEntries    uint16
+	TotalSectors   uint16
+	SectorsPerFat  uint16
+	VolumeLabel    string
+	FileSystemType string
 }
 
 func ReadDriver() {
@@ -60,7 +80,26 @@ func ReadDriver() {
 
 	// 	buf = buf[value:]
 	// }
-	fmt.Print(buf[:0x03])
+
+	oemName := string(buf[0x03:0x0B])
+	bytesPerSector := binary.BigEndian.Uint16(buf[0x0B:0x0D])
+	rootEntries := binary.BigEndian.Uint16(buf[0x11:0x13])
+	totalSectors := binary.BigEndian.Uint16(buf[0x13:0x15])
+	sectorsPerFat := binary.BigEndian.Uint16(buf[0x16:0x18])
+	volumeLabel := string(buf[0x2B:0x36])
+	fileSystemType := string(buf[0x36:0x3E])
+
+	bootSectorMainInfos := BootSectorMainInfos{
+		OemName:        oemName,
+		BytesPerSector: bytesPerSector,
+		RootEntries:    rootEntries,
+		TotalSectors:   totalSectors,
+		SectorsPerFat:  sectorsPerFat,
+		VolumeLabel:    volumeLabel,
+		FileSystemType: fileSystemType,
+	}
+
+	fmt.Println(bootSectorMainInfos)
 
 	// for i, v := range allValues {
 	// 	fmt.Printf("%d: ", i)
@@ -70,4 +109,5 @@ func ReadDriver() {
 
 func main() {
 	ReadDriver()
+	//read.CreateDriver()
 }
