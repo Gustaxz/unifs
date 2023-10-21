@@ -2,6 +2,7 @@ package handleDriver
 
 import (
 	"encoding/binary"
+	"log"
 	"os"
 
 	"github.com/gustaxz/unifs/utils"
@@ -58,6 +59,8 @@ func CreateBootSector(file *os.File) error {
 		VolumeLabel:       [11]byte(utils.StringToBytes("UNIFSYS", 11)),
 		FileSystemType:    [8]byte(utils.StringToBytes("FAT12", 8)),
 	}
+
+	log.Println("Boot sector created successfully!")
 
 	return binary.Write(file, binary.LittleEndian, utils.EncodeToBytes(data))
 
