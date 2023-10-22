@@ -33,3 +33,11 @@ func EncodeToBytes(p interface{}) []byte {
 
 	return buf.Bytes()
 }
+
+func FirstTwelveBits(buf []byte) []byte {
+	return []byte{(buf[0]), (buf[1]) >> 4}
+}
+
+func LastTwelveBits(buf []byte) []byte {
+	return []byte{(buf[1] << 4) >> 4, (buf[2])}
+}
