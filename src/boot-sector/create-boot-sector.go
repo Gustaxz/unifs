@@ -1,4 +1,4 @@
-package handleDriver
+package bootSector
 
 import (
 	"encoding/binary"

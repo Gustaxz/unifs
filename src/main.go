@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	handleDriver "github.com/gustaxz/unifs/handle-driver"
+	bootSector "github.com/gustaxz/unifs/src/boot-sector"
+	FAT "github.com/gustaxz/unifs/src/fat"
 )
 
 func check(e error) {
@@ -26,7 +27,7 @@ func main() {
 	f, err := os.Open("mydriver")
 	check(err)
 
-	bootSector := handleDriver.ReadBootSector(f)
+	bootSector := bootSector.ReadBootSector(f)
 	fmt.Println(bootSector)
 	f.Close()
 
@@ -34,13 +35,13 @@ func main() {
 	check(err)
 	defer f.Close()
 
-	err = handleDriver.EntryAdressSectorAtFAT([]byte{0x10, 0xCC}, 0, f, &bootSector)
+	err = FAT.EntryAdressSectorAtFAT([]byte{0x10, 0xCC}, 0, f, &bootSector)
 	check(err)
-	err = handleDriver.EntryAdressSectorAtFAT([]byte{0xDD, 0x1A}, 1, f, &bootSector)
+	err = FAT.EntryAdressSectorAtFAT([]byte{0xDD, 0x1A}, 1, f, &bootSector)
 	check(err)
-	err = handleDriver.EntryAdressSectorAtFAT([]byte{0xBB, 0x98}, 2, f, &bootSector)
+	err = FAT.EntryAdressSectorAtFAT([]byte{0xBB, 0x98}, 2, f, &bootSector)
 	check(err)
-	v, err := handleDriver.ReadSectorFromFAT(f, 1, &bootSector)
+	emptyAdress, err := FAT.ListOfEmptyAdressesFAT(f, &bootSector)
 	check(err)
-	fmt.Printf("%x", v)
+	fmt.Println(emptyAdress)
 }

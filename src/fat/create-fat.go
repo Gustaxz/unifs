@@ -1,4 +1,4 @@
-package handleDriver
+package FAT
 
 import (
 	"bufio"
@@ -6,11 +6,13 @@ import (
 	"fmt"
 	"io"
 	"os"
+
+	bootSector "github.com/gustaxz/unifs/src/boot-sector"
 )
 
 const fatEntrySize = 2
 
-func ReadSectorFromFAT(f *os.File, sector int, bootSector *BootSectorMainInfos) ([]byte, error) {
+func ReadSectorFromFAT(f *os.File, sector int, bootSector *bootSector.BootSectorMainInfos) ([]byte, error) {
 	sizeOfSector := bootSector.BytesPerSector
 	sizeOfFat := bootSector.SectorsPerFat * sizeOfSector
 
@@ -41,7 +43,7 @@ func ReadSectorFromFAT(f *os.File, sector int, bootSector *BootSectorMainInfos) 
 
 }
 
-func EntryAdressSectorAtFAT(adress []byte, sector int, f *os.File, bootSector *BootSectorMainInfos) error {
+func EntryAdressSectorAtFAT(adress []byte, sector int, f *os.File, bootSector *bootSector.BootSectorMainInfos) error {
 	sizeOfSector := bootSector.BytesPerSector
 	sizeOfFat := bootSector.SectorsPerFat * sizeOfSector
 	sectorsAmount := bootSector.TotalSectors
@@ -83,7 +85,7 @@ func EntryAdressSectorAtFAT(adress []byte, sector int, f *os.File, bootSector *B
 	return fmt.Errorf("sector not found")
 }
 
-func ListOfEmptyAdressesFAT(f *os.File, bootSector *BootSectorMainInfos) ([]int, error) {
+func ListOfEmptyAdressesFAT(f *os.File, bootSector *bootSector.BootSectorMainInfos) ([]int, error) {
 	var emptyAdresses []int
 	sizeOfSector := bootSector.BytesPerSector
 	sizeOfFat := bootSector.SectorsPerFat * sizeOfSector
