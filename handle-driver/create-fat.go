@@ -14,6 +14,8 @@ func ReadSectorFromFAT(f *os.File, sector int, bootSector *BootSectorMainInfos) 
 	sizeOfSector := bootSector.BytesPerSector
 	sizeOfFat := bootSector.SectorsPerFat * sizeOfSector
 
+	fmt.Println(sizeOfFat)
+
 	f.Seek(int64(sizeOfSector), 0)
 
 	reader := bufio.NewReader(f)
@@ -79,4 +81,31 @@ func EntryAdressSectorAtFAT(adress []byte, sector int, f *os.File, bootSector *B
 
 	f.Seek(0, 0)
 	return fmt.Errorf("sector not found")
+}
+
+func ListOfEmptyAdressesFAT(f *os.File, bootSector *BootSectorMainInfos) ([]int, error) {
+	var emptyAdresses []int
+	sizeOfSector := bootSector.BytesPerSector
+	sizeOfFat := bootSector.SectorsPerFat * sizeOfSector
+	//sectorsAmount := bootSector.TotalSectors
+
+	f.Seek(int64(sizeOfSector), 0)
+
+	reader := bufio.NewReader(f)
+	buf := make([]byte, fatEntrySize)
+
+	for i := 0; i < (int(sizeOfFat) / fatEntrySize); i++ {
+		_, err := reader.Read(buf)
+
+		if err != nil {
+			return []int{}, err
+		}
+
+		//fmt.Printf("%s", hex.Dump(buf))
+		if buf[0] == 0x00 && buf[1] == 0x00 {
+			emptyAdresses = append(emptyAdresses, i)
+		}
+	}
+
+	return emptyAdresses, nil
 }
