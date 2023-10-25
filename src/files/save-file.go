@@ -1,4 +1,4 @@
-package saveFile
+package files
 
 import (
 	"encoding/binary"
@@ -12,19 +12,13 @@ import (
 	FAT "github.com/gustaxz/unifs/src/fat"
 )
 
-func check(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
 type File struct {
 	Name [8]byte
 	Ext  [3]byte
 	Data []byte
 }
 
-func SaveFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos) {
+func SaveFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos) error {
 	sizeOfSector := bootSector.BytesPerSector
 
 	fileSize := len(file.Data)
@@ -33,7 +27,9 @@ func SaveFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos)
 	fmt.Println("fileSize", fileSize)
 
 	emptyAdress, err := FAT.ListOfEmptyAdressesFAT(f, bootSector)
-	check(err)
+	if err != nil {
+		return err
+	}
 
 	if len(emptyAdress) < int(sectorsAmount) {
 		panic("not enough space")
@@ -57,7 +53,9 @@ func SaveFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos)
 		binary.LittleEndian.PutUint16(buffer, nextAdress)
 
 		err := FAT.EntryAdressSectorAtFAT(buffer, adress, f, bootSector)
-		check(err)
+		if err != nil {
+			return err
+		}
 	}
 
 	// Escrevendo no Root Directory
@@ -77,25 +75,15 @@ func SaveFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos)
 	}
 
 	err = directoryEntry.CreateDirectoryEntry(entry, f, bootSector)
-	check(err)
+	if err != nil {
+		return err
+	}
 
 	// Escrevendo no Data Region
 	err = blocks.CreateSector(adresses, file.Data, f, bootSector)
-	check(err)
-}
+	if err != nil {
+		return err
+	}
 
-func ReadFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos) {
-	fileFullName := make([]byte, 11)
-	copy(fileFullName, file.Name[:])
-	copy(fileFullName[8:], file.Ext[:])
-	infos, err := directoryEntry.FindFileAtRootDirectoryEntry(fileFullName, f, bootSector)
-	check(err)
-
-	sectors, err := FAT.LinkedAdressesFAT(int(infos.FirstSector), f, bootSector)
-	check(err)
-
-	data, err := blocks.ReturnSector(sectors, f, bootSector)
-	check(err)
-
-	fmt.Println(string(data))
+	return nil
 }

@@ -5,8 +5,8 @@ import (
 	"os"
 
 	bootSector "github.com/gustaxz/unifs/src/boot-sector"
+	files "github.com/gustaxz/unifs/src/files"
 	handleDriver "github.com/gustaxz/unifs/src/handle-driver"
-	saveFile "github.com/gustaxz/unifs/src/save-file"
 	"github.com/gustaxz/unifs/utils"
 )
 
@@ -78,7 +78,7 @@ func main() {
 	f, bootSector := initDrive()
 	defer f.Close()
 
-	// saveFile.SaveFile(saveFile.File{
+	// files.files(files.File{
 	// 	Name: [8]byte(utils.StringToBytes("TESTE", 8)),
 	// 	Ext:  [3]byte(utils.StringToBytes("TXT", 3)),
 	// 	Data: []byte(`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis metus non dui scelerisque hendrerit ac in arcu. Nunc id malesuada eros. Praesent cursus nisi in elit tristique, id scelerisque ipsum congue. Cras vitae fringilla ligula, id bibendum purus. Aenean lacinia fringilla orci nec dictum. Maecenas sit amet justo sit amet massa mattis semper ut sed leo. Phasellus tincidunt velit sit amet odio bibendum euismod. Integer at sem vitae purus varius feugiat. Curabitur eu arcu vel odio dictum feugiat ac in est. Aliquam erat volutpat. Vestibulum auctor nisl vel efficitur tincidunt. Sed consequat eget turpis at sollicitudin. Donec vel vulputate sapien. Aenean elementum justo sit amet urna vulputate, vel bibendum arcu malesuada.
@@ -90,7 +90,7 @@ func main() {
 	// 	Fusce vitae massa nec purus tincidunt vehicula. Curabitur tincidunt vel justo vel tincidunt. In id sollicitudin neque. Nullam sit amet mattis augue. Phasellus id risus eget nulla scelerisque tempus. Proin nec erat vel ipsum facilisis rhoncus. Sed malesuada nec odio ut sollicitudin. Fusce ac orci lacinia, accumsan tortor at, dictum mi. Aliquam ullamcorper orci id massa efficitur volutpat. Etiam et sapien at nisi tincidunt auctor id eu est. Vivamus eu risus justo. Vestibulum et erat vel arcu facilisis dignissim. Sed lacinia volutpat bibendum.
 	// 	`),
 	// }, f, bootSector)
-	// saveFile.SaveFile(saveFile.File{
+	// files.files(files.File{
 	// 	Name: [8]byte(utils.StringToBytes("FELLIPE", 8)),
 	// 	Ext:  [3]byte(utils.StringToBytes("TXT", 3)),
 	// 	Data: []byte(`Larem ipsum dalar sit amet, cansectetur adipiscing elit. Nullam quis metus nan dui scelerisque hendrerit ac in arcu. Nunc id malesuada eras. Praesent cursus nisi in elit tristique, id scelerisque ipsum cangue. Cras vitae fringilla ligula, id bibendum purus. Aenean lacinia fringilla arci nec dictum. Maecenas sit amet justa sit amet massa mattis semper ut sed lea. Phasellus tincidunt velit sit amet adia bibendum euismad. Integer at sem vitae purus varius feugiat. Curabitur eu arcu vel adia dictum feugiat ac in est. Aliquam erat valutpat. Vestibulum auctar nisl vel efficitur tincidunt. Sed cansequat eget turpis at sallicitudin. Danec vel vulputate sapien. Aenean elementum justa sit amet urna vulputate, vel bibendum arcu malesuada.
@@ -103,9 +103,11 @@ func main() {
 	// 	`),
 	// }, f, bootSector)
 
-	saveFile.ReadFile(saveFile.File{
+	content, err := files.ReadFile(files.File{
 		Name: [8]byte(utils.StringToBytes("FELLIPE", 8)),
 		Ext:  [3]byte(utils.StringToBytes("TXT", 3)),
 	}, f, bootSector)
+	check(err)
+	fmt.Println(string(content))
 
 }
