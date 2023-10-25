@@ -46,10 +46,10 @@ func CreateBootSector(file *os.File) error {
 		Media:             [1]byte{0xF8},
 		MediaDescriptor:   [2]byte{0x00, 0x00},
 		SectorsPerFat:     [2]byte{0x00, 0x10},
-		/*  0x01 em hexadecimal corresponde a 1 em decimal.
-		A tabela FAT guarda o endereço de cada setor do disco. Tendo 4096 setores, precisamos de 16 bits para endereçar cada um deles.
-		Como 16 bits equivalem a 2 bytes, multiplicando 2 por 4096, temos 8192 bytes para alocar uma tabela FAT.
-		Como cada setor tem 512 bytes, dividimos 8192 por 512 e temos 16 (0x0010) setores para alocar a tabela FAT. */
+		/*
+			A tabela FAT guarda o endereço de cada setor do disco. Tendo 4096 setores, precisamos de 16 bits para endereçar cada um deles.
+			Como 16 bits equivalem a 2 bytes, multiplicando 2 por 4096, temos 8192 bytes para alocar uma tabela FAT.
+			Como cada setor tem 512 bytes, dividimos 8192 por 512 e temos 16 (0x0010) setores para alocar a tabela FAT. */
 		SectorsPerTrack:   [2]byte{0x00, 0x00},
 		NumberOfHeads:     [2]byte{0x00, 0x00},
 		HiddenSectors:     [4]byte{0x00, 0x00, 0x00, 0x00},
