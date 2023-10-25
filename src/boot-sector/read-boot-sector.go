@@ -3,7 +3,6 @@ package bootSector
 import (
 	"bufio"
 	"encoding/binary"
-	"fmt"
 	"io"
 	"os"
 )
@@ -18,7 +17,7 @@ type BootSectorMainInfos struct {
 	FileSystemType string
 }
 
-func ReadBootSector(f *os.File) BootSectorMainInfos {
+func ReadBootSector(f *os.File) (*BootSectorMainInfos, error) {
 
 	reader := bufio.NewReader(f)
 	buf := make([]byte, 512)
@@ -28,7 +27,7 @@ func ReadBootSector(f *os.File) BootSectorMainInfos {
 
 		if err != nil {
 			if err != io.EOF {
-				fmt.Println(err)
+				return nil, err
 			}
 			break
 		}
@@ -44,7 +43,7 @@ func ReadBootSector(f *os.File) BootSectorMainInfos {
 	volumeLabel := string(buf[0x2B:0x36])
 	fileSystemType := string(buf[0x36:0x3E])
 
-	return BootSectorMainInfos{
+	return &BootSectorMainInfos{
 		OemName:        oemName,
 		BytesPerSector: bytesPerSector,
 		RootEntries:    rootEntries,
@@ -52,6 +51,6 @@ func ReadBootSector(f *os.File) BootSectorMainInfos {
 		SectorsPerFat:  sectorsPerFat,
 		VolumeLabel:    volumeLabel,
 		FileSystemType: fileSystemType,
-	}
+	}, nil
 
 }
