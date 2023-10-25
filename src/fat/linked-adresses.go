@@ -35,7 +35,7 @@ func LinkedAdressesFAT(firstSector int, f *os.File, bootSector *bootSector.BootS
 
 		if err != nil {
 			if err != io.EOF {
-				fmt.Println(err)
+				return []int{}, err
 			}
 			break
 		}
@@ -58,7 +58,7 @@ func LinkedAdressesFAT(firstSector int, f *os.File, bootSector *bootSector.BootS
 
 				if err != nil {
 					if err != io.EOF {
-						fmt.Println(err)
+						return []int{}, err
 					}
 					break
 				}

@@ -24,8 +24,6 @@ func SaveFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos)
 	fileSize := len(file.Data)
 	sectorsAmount := math.Ceil(float64(fileSize) / float64(sizeOfSector))
 
-	fmt.Println("fileSize", fileSize)
-
 	emptyAdress, err := FAT.ListOfEmptyAdressesFAT(f, bootSector)
 	if err != nil {
 		return err
@@ -39,8 +37,6 @@ func SaveFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos)
 
 	// Escrevendo na FAT
 	for i, adress := range adresses {
-		fmt.Println("adresses", adresses)
-		fmt.Println("adress", adress)
 		var nextAdress uint16
 
 		if i == len(adresses)-1 {
