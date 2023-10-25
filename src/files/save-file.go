@@ -32,7 +32,7 @@ func SaveFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos)
 	}
 
 	if len(emptyAdress) < int(sectorsAmount) {
-		panic("not enough space")
+		return fmt.Errorf("não há espaço suficiente no disco para salvar o arquivo")
 	}
 
 	adresses := emptyAdress[0:int(sectorsAmount)]
