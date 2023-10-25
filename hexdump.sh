@@ -1,1 +1,1 @@
-Get-Content -Path ".\mydriver" -Encoding Byte -TotalCount 128 | Format-Hex
+Get-Content -Path ".\mydriver" -Encoding Byte -TotalCount 12000 | Format-Hex
