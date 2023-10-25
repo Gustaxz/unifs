@@ -8,6 +8,7 @@ import (
 	"github.com/gustaxz/unifs/utils"
 )
 
+// Seguindo a especificação da Microsoft (tirando os blocos Ignored), são essas as informações que precisam estar no boot sector da FAT
 type BootSector struct {
 	JumpBoot          [3]byte  // Instruction para pular o boot
 	OemName           [8]byte  // Nome do sistema operacional que formatou o disco

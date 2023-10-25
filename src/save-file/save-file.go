@@ -80,7 +80,8 @@ func SaveFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos)
 	check(err)
 
 	// Escrevendo no Data Region
-	blocks.CreateSectorBlock(adresses, file.Data, f, bootSector)
+	err = blocks.CreateSector(adresses, file.Data, f, bootSector)
+	check(err)
 }
 
 func ReadFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos) {
@@ -89,8 +90,12 @@ func ReadFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos)
 	copy(fileFullName[8:], file.Ext[:])
 	infos, err := directoryEntry.FindFileAtRootDirectoryEntry(fileFullName, f, bootSector)
 	check(err)
+
 	sectors, err := FAT.LinkedAdressesFAT(int(infos.FirstSector), f, bootSector)
 	check(err)
-	data := blocks.ReturnSectorBlock(sectors, f, bootSector)
+
+	data, err := blocks.ReturnSector(sectors, f, bootSector)
+	check(err)
+
 	fmt.Println(string(data))
 }

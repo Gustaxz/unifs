@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+// Essas são as informações mais relevantes para o funcionamento deste programa em específico
 type BootSectorMainInfos struct {
 	OemName        string
 	BytesPerSector uint16
