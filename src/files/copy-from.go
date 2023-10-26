@@ -2,6 +2,7 @@ package files
 
 import (
 	"os"
+	"strings"
 
 	bootSector "github.com/gustaxz/unifs/src/boot-sector"
 	"github.com/gustaxz/unifs/src/utils"
@@ -25,9 +26,11 @@ func CopyFrom(originPath string, fTarget *os.File, bootSector *bootSector.BootSe
 		return err
 	}
 
+	fOriginName := strings.Split(fOriginInfo.Name(), ".")
+
 	fOriginMainInfos := File{
-		Name: [8]byte(utils.StringToBytes(fOriginInfo.Name(), 8)),
-		Ext:  [3]byte{},
+		Name: [8]byte(utils.StringToBytes(strings.ToUpper(fOriginName[0]), 8)),
+		Ext:  [3]byte(utils.StringToBytes(strings.ToUpper(fOriginName[1]), 3)),
 		Data: buf,
 	}
 

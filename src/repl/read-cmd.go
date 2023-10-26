@@ -4,11 +4,13 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/fatih/color"
 	bootSector "github.com/gustaxz/unifs/src/boot-sector"
 	rootDirectoryEntry "github.com/gustaxz/unifs/src/directory-entry/root"
 	handleErrors "github.com/gustaxz/unifs/src/errors"
+	"github.com/gustaxz/unifs/src/files"
 	"github.com/gustaxz/unifs/src/unifs"
 )
 
@@ -61,7 +63,10 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 		c := color.New(color.FgHiMagenta).Add(color.Bold)
 		c.Print("@unifs: ")
 		scanner.Scan()
-		text := scanner.Text()
+		textScanned := scanner.Text()
+
+		tokens := strings.Split(textScanned, " ")
+		text := tokens[0]
 
 		switch text {
 		case "exit":
@@ -103,6 +108,21 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 					fmt.Println("Tamanho:", entry.FileSize)
 
 				}
+			}
+		case "copy-from":
+			color.Yellow("Copiando arquivo para o sistema unifs...")
+			if len(tokens) < 2 {
+				color.Red("Você precisa especificar o caminho do arquivo para copiar!")
+				break
+			}
+
+			originPath := tokens[1]
+			err := files.CopyFrom(originPath, f, bootSector)
+			err = handleCommandsErrors(driverPath, err)
+			if err != nil {
+				color.Red(err.Error())
+			} else {
+				color.Green("Arquivo copiado com sucesso!")
 			}
 		default:
 			color.Yellow("Comando não reconhecido!")
