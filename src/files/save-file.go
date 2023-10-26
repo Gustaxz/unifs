@@ -9,6 +9,7 @@ import (
 	"github.com/gustaxz/unifs/src/blocks"
 	bootSector "github.com/gustaxz/unifs/src/boot-sector"
 	directoryEntry "github.com/gustaxz/unifs/src/directory-entry"
+	rootDirectoryEntry "github.com/gustaxz/unifs/src/directory-entry/root"
 	FAT "github.com/gustaxz/unifs/src/fat"
 )
 
@@ -70,7 +71,7 @@ func SaveFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos)
 		FileSize:            [4]byte{byte(uint16(fileSize))},
 	}
 
-	err = directoryEntry.CreateDirectoryEntry(entry, f, bootSector)
+	err = rootDirectoryEntry.Create(entry, f, bootSector)
 	if err != nil {
 		return err
 	}
