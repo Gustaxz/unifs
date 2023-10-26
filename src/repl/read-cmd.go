@@ -2,6 +2,7 @@ package repl
 
 import (
 	"bufio"
+	"encoding/hex"
 	"fmt"
 	"os"
 	"strings"
@@ -12,6 +13,7 @@ import (
 	handleErrors "github.com/gustaxz/unifs/src/errors"
 	"github.com/gustaxz/unifs/src/files"
 	"github.com/gustaxz/unifs/src/unifs"
+	"github.com/gustaxz/unifs/src/utils"
 )
 
 func exit() {
@@ -123,6 +125,54 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 				color.Red(err.Error())
 			} else {
 				color.Green("Arquivo copiado com sucesso!")
+			}
+		case "read-file":
+			color.Yellow("Lendo arquivo do sistema unifs...")
+			if len(tokens) < 3 {
+				color.Red("Você precisa especificar o nome do arquivo para ler!")
+				break
+			}
+
+			fileName := tokens[1]
+			fileExt := tokens[2]
+
+			file := files.File{
+				Name: [8]byte(utils.StringToBytes(fileName, 8)),
+				Ext:  [3]byte(utils.StringToBytes(fileExt, 3)),
+				Data: []byte{},
+			}
+
+			data, err := files.ReadFile(file, f, bootSector)
+			err = handleCommandsErrors(driverPath, err)
+			if err != nil {
+				color.Red(err.Error())
+			} else {
+				color.Green("Arquivo lido com sucesso!")
+				fmt.Println(string(data))
+			}
+		case "hexdump":
+			color.Yellow("Lendo arquivo do sistema unifs...")
+			if len(tokens) < 3 {
+				color.Red("Você precisa especificar o nome do arquivo para ler!")
+				break
+			}
+
+			fileName := tokens[1]
+			fileExt := tokens[2]
+
+			file := files.File{
+				Name: [8]byte(utils.StringToBytes(fileName, 8)),
+				Ext:  [3]byte(utils.StringToBytes(fileExt, 3)),
+				Data: []byte{},
+			}
+
+			data, err := files.ReadFile(file, f, bootSector)
+			err = handleCommandsErrors(driverPath, err)
+			if err != nil {
+				color.Red(err.Error())
+			} else {
+				color.Green("Arquivo lido com sucesso!")
+				fmt.Println(hex.Dump(data))
 			}
 		default:
 			color.Yellow("Comando não reconhecido!")
