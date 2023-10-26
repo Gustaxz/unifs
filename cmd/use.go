@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/gustaxz/unifs/src/repl"
 	"github.com/gustaxz/unifs/src/unifs"
 	"github.com/spf13/cobra"
 )
@@ -30,6 +31,7 @@ var useCmd = &cobra.Command{
 		}
 
 		fmt.Println("Sistema unifs usado com sucesso!")
+		repl.ReadCommands(drivePath)
 	},
 }
 

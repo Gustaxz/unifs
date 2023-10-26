@@ -39,7 +39,7 @@ func CreateBootSector(data BootSector, f *os.File) error {
 		return err
 	}
 
-	log.Println("Boot sector created successfully!")
+	log.Println("Boot sector criado com sucesso!")
 	return nil
 
 }
