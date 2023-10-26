@@ -5,18 +5,14 @@ import (
 	"os"
 )
 
-func CreateEmptyDriver() (*os.File, error) {
-	filePath := "mydriver"
+func CreateEmptyDriver(drivePath string, size int64) (*os.File, error) {
 
-	os.Remove(filePath)
-
-	file, err := os.Create(filePath)
+	file, err := os.Create(drivePath)
 	if err != nil {
 		return nil, err
 	}
 
-	sizeInBytes := 2 * 1024 * 1024
-	if err := file.Truncate(int64(sizeInBytes)); err != nil {
+	if err := file.Truncate(size); err != nil {
 		return nil, err
 	}
 

@@ -3,6 +3,7 @@ package files
 import (
 	"encoding/binary"
 	"fmt"
+	"log"
 	"math"
 	"os"
 
@@ -81,6 +82,8 @@ func SaveFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos)
 	if err != nil {
 		return err
 	}
+
+	log.Printf("Arquivo %s.%s salvo com sucesso", file.Name, file.Ext)
 
 	return nil
 }
