@@ -32,7 +32,7 @@ type BootSector struct {
 	FileSystemType    [8]byte  // Tipo do sistema de arquivos
 }
 
-func CreateBootSector(data *BootSector, f *os.File) error {
+func CreateBootSector(data BootSector, f *os.File) error {
 
 	err := binary.Write(f, binary.LittleEndian, utils.EncodeToBytes(data))
 	if err != nil {

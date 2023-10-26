@@ -14,13 +14,12 @@ func List(f *os.File, bootSector *bootSector.BootSectorMainInfos) ([]directoryEn
 	sizeOfSector := bootSector.BytesPerSector
 	sizeOfFat := bootSector.SectorsPerFat * sizeOfSector
 	directoryEntrySize := 32
-	rootDirectorySize := int(bootSector.RootEntries) * directoryEntrySize
 
 	f.Seek(int64(sizeOfFat+sizeOfSector), 0)
 	defer f.Seek(0, 0)
 
 	buf := make([]byte, directoryEntrySize)
-	for i := 0; i < rootDirectorySize; i++ {
+	for i := 0; i < int(bootSector.RootEntries); i++ {
 		_, err := f.Read(buf)
 		if err != nil {
 			return nil, err
