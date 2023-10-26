@@ -4,8 +4,7 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/fatih/color"
 	"github.com/gustaxz/unifs/src/repl"
 	"github.com/gustaxz/unifs/src/unifs"
 	"github.com/spf13/cobra"
@@ -20,7 +19,7 @@ var useCmd = &cobra.Command{
 	Long:  `Use o comando 'use' mais o nome do arquivo para usar o sistema unifs nele. Caso não exista, criará um formato FAT16 no arquivo.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if drivePath == "" {
-			fmt.Println("Você precisa especificar o caminho do arquivo para usar o sistema unifs!")
+			color.Red("Você precisa especificar o caminho do arquivo para usar o sistema unifs!")
 			return
 		}
 
