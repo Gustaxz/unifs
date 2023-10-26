@@ -1,12 +1,10 @@
 package unifs
 
 import (
-	"bytes"
-	"fmt"
 	"os"
 
 	bootSector "github.com/gustaxz/unifs/src/boot-sector"
-	"github.com/gustaxz/unifs/src/utils"
+	handleErrors "github.com/gustaxz/unifs/src/errors"
 )
 
 func OpenDrive(drivePath string) (*os.File, *bootSector.BootSectorMainInfos, error) {
@@ -31,9 +29,8 @@ func OpenDrive(drivePath string) (*os.File, *bootSector.BootSectorMainInfos, err
 	if err != nil {
 		return nil, nil, err
 	}
-	fmt.Println(bootSector)
-	if !bytes.Equal(utils.StringToBytes(bootSector.OemName, 6), []byte("UNIFS")) {
-		return nil, nil, err
+	if bootSector.BytesPerSector != 512 {
+		return nil, nil, handleErrors.ErrFileNotFormatted
 	}
 
 	return f, bootSector, nil

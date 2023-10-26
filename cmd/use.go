@@ -24,14 +24,9 @@ var useCmd = &cobra.Command{
 			return
 		}
 
-		_, _, err := unifs.OpenDrive(drivePath)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
+		f, b, err := unifs.OpenDrive(drivePath)
 
-		fmt.Println("Sistema unifs usado com sucesso!")
-		repl.ReadCommands(drivePath)
+		repl.ReadCommands(f, b, drivePath, err)
 	},
 }
 
