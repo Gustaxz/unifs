@@ -5,7 +5,7 @@ import (
 
 	bootSector "github.com/gustaxz/unifs/src/boot-sector"
 	handleDriver "github.com/gustaxz/unifs/src/handle-driver"
-	"github.com/gustaxz/unifs/utils"
+	"github.com/gustaxz/unifs/src/utils"
 )
 
 func FormatDrive(drivePath string, size int64) error {

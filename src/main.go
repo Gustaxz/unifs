@@ -5,7 +5,7 @@ import (
 
 	"github.com/gustaxz/unifs/src/files"
 	"github.com/gustaxz/unifs/src/unifs"
-	"github.com/gustaxz/unifs/utils"
+	"github.com/gustaxz/unifs/src/utils"
 )
 
 func check(e error) {

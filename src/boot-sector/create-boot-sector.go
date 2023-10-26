@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/gustaxz/unifs/utils"
+	"github.com/gustaxz/unifs/src/utils"
 )
 
 // Seguindo a especificação da Microsoft (tirando os blocos Ignored), são essas as informações que precisam estar no boot sector da FAT

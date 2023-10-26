@@ -6,7 +6,7 @@ import (
 
 	bootSector "github.com/gustaxz/unifs/src/boot-sector"
 	directoryEntry "github.com/gustaxz/unifs/src/directory-entry"
-	"github.com/gustaxz/unifs/utils"
+	"github.com/gustaxz/unifs/src/utils"
 )
 
 func Create(entry directoryEntry.DirectoryEntry, f *os.File, bootSector *bootSector.BootSectorMainInfos) error {
