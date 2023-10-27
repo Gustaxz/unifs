@@ -5,10 +5,11 @@
     -   Listar arquivos ✅
     -   Formatar Arquivos ✅
     -   Mostrar informações da partição
+    -   O quão cheio está o disco
 -   Funções como:
     -   Deletar arquivo
     -   Copiar arquivo de fora para o UNIFS ✅
-    -   Copiar arquivo de dentro para fora do UNIFS
+    -   Copiar arquivo de dentro para fora do UNIFS ✅
     -   Criar subdiretórios
 -   Escrever testes para as funções
 -   Usar um pendrive como disco virtual
