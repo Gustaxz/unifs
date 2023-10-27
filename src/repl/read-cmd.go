@@ -201,6 +201,8 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 				color.Green("Arquivo lido com sucesso!")
 				fmt.Println(hex.Dump(data))
 			}
+		case "infos":
+			unifs.DriverInfos(bootSector)
 		default:
 			color.Yellow("Comando não reconhecido!")
 		}

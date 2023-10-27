@@ -4,11 +4,12 @@
 -   Construir uma CLI para funções como:
     -   Listar arquivos ✅
     -   Formatar Arquivos ✅
-    -   Mostrar informações da partição
-    -   O quão cheio está o disco
+    -   Mostrar informações da partição 🟡
+    -   O quão cheio está o disco 🟡
 -   Funções como:
--   Verificar se o arquivo existe
-    -   Deletar arquivo
+    -   Verificar se o arquivo existe antes de criar no unifs 🟡
+    -   Modificar arquivo
+    -   Deletar arquivo 🟡
     -   Copiar arquivo de fora para o UNIFS ✅
     -   Copiar arquivo de dentro para fora do UNIFS ✅
     -   Criar subdiretórios
