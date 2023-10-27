@@ -7,6 +7,7 @@
     -   Mostrar informações da partição
     -   O quão cheio está o disco
 -   Funções como:
+-   Verificar se o arquivo existe
     -   Deletar arquivo
     -   Copiar arquivo de fora para o UNIFS ✅
     -   Copiar arquivo de dentro para fora do UNIFS ✅

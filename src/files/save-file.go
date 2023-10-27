@@ -68,9 +68,12 @@ func SaveFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos)
 		Ignored:             [2]byte{0x00, 0x00},
 		LastWriteTime:       [2]byte{0x00, 0x00},
 		LastWriteDate:       [2]byte{0x00, 0x00},
-		FirstLogicalCluster: [2]byte{byte(uint16(adresses[0]))},
-		FileSize:            [4]byte{byte(uint16(fileSize))},
+		FirstLogicalCluster: [2]byte{byte(uint16(adresses[0]))}, //TODO: Fazer o mesmo que o file size
 	}
+
+	fileSizeBytes := make([]byte, 4)
+	binary.LittleEndian.PutUint32(fileSizeBytes, uint32(fileSize))
+	copy(entry.FileSize[:], fileSizeBytes[:])
 
 	err = rootDirectoryEntry.Create(entry, f, bootSector)
 	if err != nil {
