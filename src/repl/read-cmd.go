@@ -126,10 +126,36 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 			} else {
 				color.Green("Arquivo copiado com sucesso!")
 			}
+		case "copy-to":
+			color.Yellow("Copiando arquivo do sistema unifs...")
+			if len(tokens) < 4 {
+				color.Red(
+					"São necessarios 4 argumentos para copiar um arquivo!\nExemplo: copy-to arquivo-alvo.txt NOME_ARQUIVO EXTENSAO_ARQUIVO\nOs útimos dois argumentos são referentes ao nome e extensão dentro do unifs!")
+				break
+			}
+
+			targetPath := tokens[1]
+			fileName := tokens[2]
+			fileExt := tokens[3]
+
+			fOrigin := files.File{
+				Name: [8]byte(utils.StringToBytes(fileName, 8)),
+				Ext:  [3]byte(utils.StringToBytes(fileExt, 3)),
+				Data: []byte{},
+			}
+
+			err := files.CopyTo(targetPath, fOrigin, f, bootSector)
+			err = handleCommandsErrors(driverPath, err)
+			if err != nil {
+				color.Red(err.Error())
+			} else {
+				color.Green("Arquivo copiado com sucesso!")
+			}
 		case "read-file":
 			color.Yellow("Lendo arquivo do sistema unifs...")
 			if len(tokens) < 3 {
-				color.Red("Você precisa especificar o nome do arquivo para ler!")
+				color.Red(
+					"São necessarios 3 argumentos para copiar um arquivo!\nExemplo: copy-to NOME_ARQUIVO EXTENSAO_ARQUIVO\nOs útimos dois argumentos são referentes ao nome e extensão dentro do unifs!")
 				break
 			}
 
@@ -142,7 +168,7 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 				Data: []byte{},
 			}
 
-			data, err := files.ReadFile(file, f, bootSector)
+			data, _, err := files.ReadFile(file, f, bootSector)
 			err = handleCommandsErrors(driverPath, err)
 			if err != nil {
 				color.Red(err.Error())
@@ -153,7 +179,8 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 		case "hexdump":
 			color.Yellow("Lendo arquivo do sistema unifs...")
 			if len(tokens) < 3 {
-				color.Red("Você precisa especificar o nome do arquivo para ler!")
+				color.Red(
+					"São necessarios 3 argumentos para copiar um arquivo!\nExemplo: copy-to NOME_ARQUIVO EXTENSAO_ARQUIVO\nOs útimos dois argumentos são referentes ao nome e extensão dentro do unifs!")
 				break
 			}
 
@@ -166,7 +193,7 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 				Data: []byte{},
 			}
 
-			data, err := files.ReadFile(file, f, bootSector)
+			data, _, err := files.ReadFile(file, f, bootSector)
 			err = handleCommandsErrors(driverPath, err)
 			if err != nil {
 				color.Red(err.Error())

@@ -23,17 +23,15 @@ func CopyTo(targetPath string, fOrigin File, f *os.File, bootSector *bootSector.
 	}
 	defer fTatget.Close()
 
-	content, err := ReadFile(fOrigin, f, bootSector)
+	content, infos, err := ReadFile(fOrigin, f, bootSector)
 	if err != nil {
 		return err
 	}
 
-	err = binary.Write(fTatget, binary.LittleEndian, content)
+	err = binary.Write(fTatget, binary.LittleEndian, content[:infos.FileSize])
 	if err != nil {
 		return err
 	}
-
-	log.Println("Arquivo copiado com sucesso!")
 
 	return nil
 }
