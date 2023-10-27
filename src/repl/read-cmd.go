@@ -107,7 +107,7 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 
 				for _, entry := range entrys {
 					fmt.Println("Nome:", entry.FileName)
-					fmt.Println("Tamanho:", entry.FileSize)
+					fmt.Printf("Tamanho: %d bytes (%d KB)\n", entry.FileSize, entry.FileSize/(1024))
 
 				}
 			}
