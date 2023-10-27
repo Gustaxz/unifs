@@ -202,7 +202,11 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 				fmt.Println(hex.Dump(data))
 			}
 		case "infos":
-			unifs.DriverInfos(bootSector)
+			err = unifs.DriverInfos(f, bootSector)
+			err = handleCommandsErrors(driverPath, err)
+			if err != nil {
+				color.Red(err.Error())
+			}
 		default:
 			color.Yellow("Comando não reconhecido!")
 		}
