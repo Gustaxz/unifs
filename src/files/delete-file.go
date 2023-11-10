@@ -39,8 +39,10 @@ func DeleteFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfo
 
 	}
 
+	sizeOfOccupedSectors := len(sectors) * int(bootSector.BytesPerSector)
+
 	//Deletando arquivo da Data Region
-	err = blocks.CreateSector(sectors, make([]byte, bootSector.BytesPerSector), f, bootSector)
+	err = blocks.CreateSector(sectors, make([]byte, sizeOfOccupedSectors), f, bootSector)
 	if err != nil {
 		return err
 	}

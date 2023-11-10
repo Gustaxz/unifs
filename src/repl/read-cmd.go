@@ -177,10 +177,10 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 				fmt.Println(string(data))
 			}
 		case "delete-file":
-			color.Yellow("Lendo arquivo do sistema unifs...")
+			color.Yellow("Excluindo arquivo do sistema unifs...")
 			if len(tokens) < 3 {
 				color.Red(
-					"São necessarios 3 argumentos para copiar um arquivo!\nExemplo: copy-to NOME_ARQUIVO EXTENSAO_ARQUIVO\nOs útimos dois argumentos são referentes ao nome e extensão dentro do unifs!")
+					"São necessarios 3 argumentos para excluir um arquivo!\nExemplo: delete-file NOME_ARQUIVO EXTENSAO_ARQUIVO\nOs útimos dois argumentos são referentes ao nome e extensão dentro do unifs!")
 				break
 			}
 
