@@ -5,6 +5,7 @@ import (
 
 	"github.com/gustaxz/unifs/src/blocks"
 	bootSector "github.com/gustaxz/unifs/src/boot-sector"
+	directoryEntry "github.com/gustaxz/unifs/src/directory-entry"
 	rootDirectoryEntry "github.com/gustaxz/unifs/src/directory-entry/root"
 	FAT "github.com/gustaxz/unifs/src/fat"
 )
@@ -13,19 +14,23 @@ func DeleteFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfo
 	fileFullName := make([]byte, 11)
 	copy(fileFullName, file.Name[:])
 	copy(fileFullName[8:], file.Ext[:])
-	infos, _, err := rootDirectoryEntry.FindFile(fileFullName, f, bootSector)
+	infos, pos, err := rootDirectoryEntry.FindFile(fileFullName, f, bootSector)
 	if err != nil {
 		return err
 	}
 
-	// TODO - Delete file from root directory entry
+	//Deletando entrada do Root Directory Entry
+	err = rootDirectoryEntry.CreateWithPosition(directoryEntry.DirectoryEntry{}, f, bootSector, pos)
+	if err != nil {
+		return err
+	}
 
 	sectors, err := FAT.LinkedAdressesFAT(int(infos.FirstSector), f, bootSector)
 	if err != nil {
 		return err
 	}
 
-	//Deleting file from FAT
+	//Deletando entradas da FAT
 	for _, sector := range sectors {
 		err = FAT.EntryAdressSectorAtFAT([]byte{0, 0}, sector, f, bootSector)
 		if err != nil {
@@ -34,7 +39,7 @@ func DeleteFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfo
 
 	}
 
-	//Deleting file from Data Region
+	//Deletando arquivo da Data Region
 	err = blocks.CreateSector(sectors, make([]byte, bootSector.BytesPerSector), f, bootSector)
 	if err != nil {
 		return err
