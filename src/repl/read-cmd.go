@@ -61,6 +61,9 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 	c := color.New(color.FgGreen).Add(color.Bold)
 	c.Println("\nSistema unifs inicializado com sucesso!\n")
 
+	commandHelp := CommandHelp{}
+	commandHelp.Init()
+
 	for {
 		c := color.New(color.FgHiMagenta).Add(color.Bold)
 		c.Print("@unifs: ")
@@ -237,6 +240,9 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 			if err != nil {
 				color.Red(err.Error())
 			}
+		case "help":
+			color.Yellow("Comandos disponíveis:")
+			commandHelp.Print()
 		default:
 			color.Yellow("Comando não reconhecido!")
 		}
