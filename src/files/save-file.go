@@ -21,6 +21,13 @@ type File struct {
 }
 
 func SaveFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfos) error {
+	fileFullName := make([]byte, 11)
+	copy(fileFullName, file.Name[:])
+	copy(fileFullName[8:], file.Ext[:])
+	_, _, err := rootDirectoryEntry.FindFile(fileFullName, f, bootSector)
+	if err == nil {
+		return fmt.Errorf("arquivo já existe")
+	}
 	sizeOfSector := bootSector.BytesPerSector
 
 	fileSize := len(file.Data)
