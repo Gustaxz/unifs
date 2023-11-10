@@ -13,7 +13,7 @@ func DeleteFile(file File, f *os.File, bootSector *bootSector.BootSectorMainInfo
 	fileFullName := make([]byte, 11)
 	copy(fileFullName, file.Name[:])
 	copy(fileFullName[8:], file.Ext[:])
-	infos, err := rootDirectoryEntry.FindFile(fileFullName, f, bootSector)
+	infos, _, err := rootDirectoryEntry.FindFile(fileFullName, f, bootSector)
 	if err != nil {
 		return err
 	}
