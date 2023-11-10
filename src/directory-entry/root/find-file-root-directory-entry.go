@@ -37,5 +37,5 @@ func FindFile(fileName []byte, f *os.File, bootSector *bootSector.BootSectorMain
 		//fmt.Printf("%s", hex.Dump(buf))
 	}
 
-	return nil, 0, fmt.Errorf("file not found")
+	return nil, 0, fmt.Errorf("arquivo não encontrado")
 }
