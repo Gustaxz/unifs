@@ -231,6 +231,12 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 			if err != nil {
 				color.Red(err.Error())
 			}
+		case "fat":
+			err = unifs.FATInfos(f, bootSector)
+			err = handleCommandsErrors(driverPath, err)
+			if err != nil {
+				color.Red(err.Error())
+			}
 		default:
 			color.Yellow("Comando não reconhecido!")
 		}
