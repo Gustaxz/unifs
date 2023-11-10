@@ -176,6 +176,30 @@ func ReadCommands(f *os.File, bootSector *bootSector.BootSectorMainInfos, driver
 				color.Green("Arquivo lido com sucesso!")
 				fmt.Println(string(data))
 			}
+		case "delete-file":
+			color.Yellow("Lendo arquivo do sistema unifs...")
+			if len(tokens) < 3 {
+				color.Red(
+					"São necessarios 3 argumentos para copiar um arquivo!\nExemplo: copy-to NOME_ARQUIVO EXTENSAO_ARQUIVO\nOs útimos dois argumentos são referentes ao nome e extensão dentro do unifs!")
+				break
+			}
+
+			fileName := tokens[1]
+			fileExt := tokens[2]
+
+			file := files.File{
+				Name: [8]byte(utils.StringToBytes(fileName, 8)),
+				Ext:  [3]byte(utils.StringToBytes(fileExt, 3)),
+				Data: []byte{},
+			}
+
+			err := files.DeleteFile(file, f, bootSector)
+			err = handleCommandsErrors(driverPath, err)
+			if err != nil {
+				color.Red(err.Error())
+			} else {
+				color.Green("Arquivo deletado com sucesso!")
+			}
 		case "hexdump":
 			color.Yellow("Lendo arquivo do sistema unifs...")
 			if len(tokens) < 3 {
