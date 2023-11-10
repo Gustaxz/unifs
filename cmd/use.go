@@ -16,7 +16,7 @@ var drivePath string
 var useCmd = &cobra.Command{
 	Use:   "use",
 	Short: "Coloque o nome/caminho do arquivo para usar.",
-	Long:  `Use o comando 'use' mais o nome do arquivo para usar o sistema unifs nele. Caso não exista, criará um formato FAT16 no arquivo.`,
+	Long:  `Use o comando 'use -p' mais o nome do arquivo para usar o sistema unifs nele. Caso não exista, criará um formato FAT16 no arquivo.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if drivePath == "" {
 			color.Red("Você precisa especificar o caminho do arquivo para usar o sistema unifs!")
