@@ -16,7 +16,7 @@ func CreateEmptyDriver(drivePath string, size int64) (*os.File, error) {
 		return nil, err
 	}
 
-	log.Println("Drive criado com sucesso!")
+	log.Println("Driver criado com sucesso!")
 
 	return file, nil
 }
