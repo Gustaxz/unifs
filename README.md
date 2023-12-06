@@ -44,10 +44,10 @@ Após isso, você entrará em um repl, onde poderá usar os comandos do unifs
 
 -   `exit` : sai do repl
 
-<img src="./docs/exit.png" width="40%">
+<img src="./docs/exit.png" width="50%">
 
 -   `clear` : limpa o terminal
 
 -   `format` : formata o arquivo passado na flag `-p` para o sistema de arquivos unifs
 
-<img src="./docs/format.png" width="40%">
+<img src="./docs/format.png" width="50%">
