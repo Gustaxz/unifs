@@ -5,7 +5,13 @@
 
 Unifs é uma versão simplificada do FAT16, usando a linguagem Go. É apenas um projeto de aprendizado para sistemas de arquivos
 
+#### Veja em uso:
+https://github.com/Gustaxz/unifs/assets/84031319/3f6cae7e-111d-443e-818d-674db3bef5a2
+
 ## Instalação
+
+
+
 
 Para gerar o executável
 
