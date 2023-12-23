@@ -5,8 +5,6 @@
 
 Unifs é uma versão simplificada do FAT16, usando a linguagem Go. É apenas um projeto de aprendizado para sistemas de arquivos
 
-<img src="./docs/use.png" width="60%">
-
 ## Instalação
 
 Para gerar o executável
@@ -97,3 +95,7 @@ $ hexdump /path/unifs
 -   `infos` : mostra informações sobre o sistema de arquivos
 
 -   `fat` : mostra a tabela FAT do sistema de arquivos
+
+### Licença
+
+Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
