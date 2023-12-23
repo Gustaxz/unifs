@@ -42,23 +42,17 @@ Após isso, você entrará em um repl, onde poderá usar os comandos do unifs
 
 ### Comandos
 
--   `exit` : sai do repl
+-   `help` : mostra os comandos disponíveis
 
-<img src="./docs/exit.png" width="50%">
+-   `exit` : sai do repl
 
 -   `clear` : limpa o terminal
 
 -   `format` : formata o arquivo passado na flag `-p` para o sistema de arquivos unifs
 
-<img src="./docs/format.png" width="50%">
-
 -   `delete-driver` : apaga o arquivo passado na flag `-p`
 
-<img src="./docs/delete_driver.png" width="50%">
-
 -   `list-root` : lista os arquivos e diretórios da raiz do sistema de arquivos
-
-<img src="./docs/list_root.png" width="50%">
 
 -   `copy-from` : copia um arquivo do seu computador para o sistema de arquivos, seguindo o seguinte padrão
 
@@ -68,8 +62,6 @@ $ copy-from /path/to/file
 
 ```
 
-<img src="./docs/copy_from.png" width="50%">
-
 -   `copy-to` : copia um arquivo do sistema de arquivos para o seu computador, seguindo o seguinte padrão
 
 ```bash
@@ -78,4 +70,30 @@ $ copy-to /path/unifs /path/to/destination
 
 ```
 
-<img src="./docs/copy_to.png" width="50%">
+-   `read-file` : lê um arquivo do sistema de arquivos, seguindo o seguinte padrão
+
+```bash
+
+$ read-file /path/unifs
+
+```
+
+-   `delete-file` : apaga um arquivo do sistema de arquivos, seguindo o seguinte padrão
+
+```bash
+
+$ delete-file /path/unifs
+
+```
+
+-   `hexdump` : mostra o conteúdo de um arquivo em hexadecimal, seguindo o seguinte padrão
+
+```bash
+
+$ hexdump /path/unifs
+
+```
+
+-   `infos` : mostra informações sobre o sistema de arquivos
+
+-   `fat` : mostra a tabela FAT do sistema de arquivos
